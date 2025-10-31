@@ -14,21 +14,21 @@ public class settings extends JDialog {
 
     public settings(JFrame parent) {
         super(parent, "Linea settings", true);
-        JPanel panel = new JPanel(new GridLayout(0, 1, 5, 5));
-        JPanel paneleditor = new JPanel(new GridLayout(0, 1, 5, 5));
+        JPanel panel = new JPanel();
+        JPanel paneleditor = new JPanel();
         setSize(500, 171);
-        setResizable(false);
-        setLocationRelativeTo(parent);
-        setLayout(new BorderLayout());
+        setLocationRelativeTo(null);
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        paneleditor.setLayout(new BoxLayout(paneleditor, BoxLayout.Y_AXIS));
+        panel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         JTabbedPane tabs = new JTabbedPane();
-        JPanel appearance = new JPanel(new GridLayout(3, 1));
         showLineNumber = new JCheckBox("Show line number");
         antialiasing = new JCheckBox("Anti-aliasing");
         highlightCurrentLine = new JCheckBox("Highlight current line");
         currentLineFading = new JCheckBox("Fade current line highlight");
 
-        JPanel editor = new JPanel(new GridLayout(3, 1));
         folding = new JCheckBox("Code folding");
         wordWrapping = new JCheckBox("Wrap words");
         hyperlinks = new JCheckBox("Allow hyperlinks");
@@ -37,14 +37,22 @@ public class settings extends JDialog {
         tabs.addTab("Appearance", panel);
         tabs.addTab("Editor", paneleditor);
         panel.add(showLineNumber);
+        showLineNumber.setAlignmentX(Component.LEFT_ALIGNMENT);
         panel.add(antialiasing);
+        antialiasing.setAlignmentX(Component.LEFT_ALIGNMENT);
         panel.add(highlightCurrentLine);
+        highlightCurrentLine.setAlignmentX(Component.LEFT_ALIGNMENT);
         panel.add(currentLineFading);
+        currentLineFading.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         paneleditor.add(folding);
+        folding.setAlignmentX(Component.LEFT_ALIGNMENT);
         paneleditor.add(wordWrapping);
+        wordWrapping.setAlignmentX(Component.LEFT_ALIGNMENT);
         paneleditor.add(hyperlinks);
+        hyperlinks.setAlignmentX(Component.LEFT_ALIGNMENT);
         paneleditor.add(braces);
-        add(tabs, BorderLayout.PAGE_START);
+        braces.setAlignmentX(Component.LEFT_ALIGNMENT);
+        add(tabs);
     }
 }

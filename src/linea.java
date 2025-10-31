@@ -45,6 +45,9 @@ public class linea {
         boolean braces;
         boolean folding;
 
+        JFrame frame = new JFrame("Linea");
+        settingswindow = new settings(frame);
+
         try (FileInputStream in = new FileInputStream("config.properties")) {
             config.load(in);
             fontSize = Integer.parseInt(config.getProperty("fontsize", "15"));
@@ -91,9 +94,6 @@ public class linea {
 
         undoManager = new UndoManager();
 
-	    JFrame frame = new JFrame("Linea");
-
-        settingswindow = new settings(frame);
         settingswindow.antialiasing.setSelected(antialiasing);
         settingswindow.hyperlinks.setSelected(hyperlinks);
         settingswindow.highlightCurrentLine.setSelected(highlight);
@@ -287,9 +287,28 @@ public class linea {
 
         RTextScrollPane scroll = new RTextScrollPane(textwrite);
         scroll.setLineNumbersEnabled(linenumber);
-        textwrite.setSyntaxEditingStyle("text/plain");
 
         frame.getContentPane().add(scroll, BorderLayout.CENTER);
+
+        if (args.length > 0) {
+            File openedFile = new File(args[0]);
+
+            if (openedFile.exists()) {
+                try {
+                    String content = Files.readString(openedFile.toPath());
+                    textwrite.setText(content);
+                    undoManager.reset();
+                    String name = openedFile.getName();
+                    int lastDot = name.lastIndexOf(".");
+                    String ext = (lastDot == -1) ? "" : name.substring(lastDot + 1);
+                    textwrite.setSyntaxEditingStyle(syntaxMap.getOrDefault(ext, "text/plain"));
+                } catch (IOException ex) {
+                    JOptionPane.showConfirmDialog(frame, "Error reading file!", "Linea", JOptionPane.OK_CANCEL_OPTION);
+                }
+            } else {
+                JOptionPane.showMessageDialog(frame, "File not found!", "Linea", JOptionPane.WARNING_MESSAGE);
+            }
+        }
 
         frame.setVisible(true);
     }
